@@ -124,8 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
-
                         const responseDataContent = data.data.content;
                         const responseUserContent = data.user_message.content;
 
