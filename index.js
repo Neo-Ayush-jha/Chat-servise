@@ -129,6 +129,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         const responseDataContent = data.data.content;
                         const responseUserContent = data.user_message.content;
 
+
+                        conversation.style.display = 'flex'; 
+                        conversation.style.flexDirection = 'column';
+
                         const responseUserMessage = document.createElement('div');
                         responseUserMessage.className = 'message left';
                         responseUserMessage.style.cssText = 'background-color: #007bff; color: #fff; float: right; align-self: flex-end;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px;';
@@ -137,9 +141,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         const responseMessage = document.createElement('div');
                         responseMessage.className = 'message left';
-                        responseMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px;overflow-y: auto;';
+                        responseMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
                         responseMessage.textContent = responseDataContent;
                         conversation.appendChild(responseMessage);
+
 
                         inputField.value = '';
                     })
