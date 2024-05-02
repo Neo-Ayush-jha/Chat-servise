@@ -62,10 +62,33 @@ document.addEventListener("DOMContentLoaded", function () {
         status.style.color = '#9b9b9b';
         status.textContent = 'Online';
 
+
         const closeButton = document.createElement('div');
         closeButton.className = 'close';
-        closeButton.style.cssText = 'font-size: 10px; font-weight: 600; color: #000; margin-left: auto; cursor: pointer; border: 1px solid #000; border-radius: 50%; padding: 6px 8px;';
-        closeButton.textContent = 'X';
+        closeButton.style.cssText = 'font-size: 10px; font-weight: 600; color: #000; margin-left: auto; cursor: pointer; border: 1px solid #000; border-radius: 50%; padding: 4px 6px;';
+
+        const closeIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        closeIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        closeIcon.setAttribute("width", "18");
+        closeIcon.setAttribute("height", "18");
+        closeIcon.setAttribute("viewBox", "0 0 24 24");
+        closeIcon.setAttribute("fill", "none");
+        closeIcon.setAttribute("stroke", "currentColor");
+        closeIcon.setAttribute("stroke-width", "2");
+        closeIcon.setAttribute("stroke-linecap", "round");
+        closeIcon.setAttribute("stroke-linejoin", "round");
+        closeIcon.classList.add("lucide", "lucide-x");
+
+        const path1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path1.setAttribute("d", "M18 6 6 18");
+
+        const path2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path2.setAttribute("d", "m6 6 12 12");
+
+        closeIcon.appendChild(path1);
+        closeIcon.appendChild(path2);
+
+        closeButton.appendChild(closeIcon);
 
         const containerInner = document.createElement('div');
         containerInner.className = 'container-inner';
@@ -89,11 +112,29 @@ document.addEventListener("DOMContentLoaded", function () {
         conversation.className = 'conversation';
         conversation.style.cssText = 'flex: 1; padding: 10px; border-radius: 8px; margin-bottom: 10px; height: 360px;';
 
+        const aiFirst = document.createElement('div');
+        aiFirst.style.display = 'flex';
+        aiFirst.style.flexDirection = 'row';
+        aiFirst.style.alignItems = 'end';
+        aiFirst.style.gap = '2px';
+
+
+
+        const avatarImage = document.createElement('img');
+        avatarImage.src = 'https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png';
+        avatarImage.alt = '';
+        avatarImage.style.width = '24px';
+        avatarImage.style.height = '24px';
+        avatarImage.style.marginBottom = '18px';
+
         const message1 = document.createElement('div');
         message1.className = 'message left';
-        message1.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px;';
+        message1.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius: 10px;';
         message1.textContent = "Absolutely, let's dive in 🙏! 🌟 Feel free to ask anything on your mind, and we'll navigate through together! 🚀.";
-        conversation.appendChild(message1);
+
+        aiFirst.appendChild(avatarImage);
+        aiFirst.appendChild(message1);
+        conversation.appendChild(aiFirst)
 
         const typing = document.createElement('div');
         typing.className = 'typing';
@@ -150,6 +191,38 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
 
+
+        const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+        svgIcon.setAttribute("width", "26");
+        svgIcon.setAttribute("height", "26");
+        svgIcon.setAttribute("viewBox", "0 0 24 24");
+        svgIcon.setAttribute("fill", "none");
+        svgIcon.setAttribute("fill", "#007bff");
+        svgIcon.setAttribute("color", "#fff");
+        svgIcon.setAttribute("stroke", "currentColor");
+        svgIcon.setAttribute("stroke-width", "2");
+        svgIcon.setAttribute("stroke-linecap", "round");
+        svgIcon.setAttribute("stroke-linejoin", "round");
+        svgIcon.classList.add("lucide", "lucide-circle-user");
+
+        const circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle1.setAttribute("cx", "12");
+        circle1.setAttribute("cy", "12");
+        circle1.setAttribute("r", "10");
+
+        const circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle2.setAttribute("cx", "12");
+        circle2.setAttribute("cy", "10");
+        circle2.setAttribute("r", "3");
+
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", "M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662");
+
+        svgIcon.appendChild(circle1);
+        svgIcon.appendChild(circle2);
+        svgIcon.appendChild(path);
+
         function sendMessage() {
             const messageContent = inputField.value.trim();
 
@@ -158,18 +231,43 @@ document.addEventListener("DOMContentLoaded", function () {
             conversation.style.display = 'flex';
             conversation.style.flexDirection = 'column';
 
+            const container = document.createElement('div');
+            container.style.display = 'flex';
+            container.style.flexDirection = 'row';
+            container.style.alignItems = 'center';
+            container.style.gap = '2px';
+
+            container.appendChild(svgIcon);
+
             const responseUserMessage = document.createElement('div');
             responseUserMessage.className = 'message left';
-            responseUserMessage.style.cssText = 'background-color: #007bff; color: #fff; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px;';
+            responseUserMessage.style.cssText = 'background-color: #007bff; color: #fff; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px;';
             responseUserMessage.textContent = responseUserContent;
-            conversation.appendChild(responseUserMessage);
+
+            container.appendChild(responseUserMessage);
+
+            conversation.appendChild(container);
+
 
             if (messageContent !== '') {
                 inputField.value = '';
+                const ai = document.createElement('div');
+                ai.style.display = 'flex';
+                ai.style.flexDirection = 'row';
+                ai.style.alignItems = 'end';
+                ai.style.gap = '4px';
+
+
+                const avatarImage = document.createElement('img');
+                avatarImage.src = 'https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png';
+                avatarImage.alt = '';
+                avatarImage.style.width = '24px';
+                avatarImage.style.height = '24px';
+                avatarImage.style.marginBottom = '18px';
 
                 const typingMessage = document.createElement('div');
                 typingMessage.className = 'message left';
-                typingMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                typingMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
                 typingMessage.textContent = 'Typing...';
                 conversation.appendChild(typingMessage);
 
@@ -177,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     conversation.removeChild(typingMessage);
                     const errorMessage = document.createElement('div');
                     errorMessage.className = 'message left';
-                    errorMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                    errorMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
                     errorMessage.textContent = 'Response is taking too long. Please try again later.';
                     conversation.appendChild(errorMessage);
                 }, 5000);
@@ -204,14 +302,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         clearTimeout(responseTimeout);
                         conversation.removeChild(typingMessage);
 
-                        const responseDataContent = data.data.content;
 
+                        const responseDataContent = data.data.content;
                         const responseMessage = document.createElement('div');
                         responseMessage.className = 'message left';
-                        responseMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                        responseMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
                         responseMessage.textContent = responseDataContent;
-                        conversation.appendChild(responseMessage);
-
+                        ai.appendChild(avatarImage);
+                        ai.appendChild(responseMessage);
+                        conversation.appendChild(ai);
                         inputField.value = '';
                     })
                     .catch(error => {
