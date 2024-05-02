@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 containerInner.style.height = '72%';
                 containerInner.style.paddingBottom = '4%';
             } else {
-                containerInner.style.height = '496px';
+                containerInner.style.height = '486px';
                 containerInner.style.paddingBottom = '-4%';
             }
         }
@@ -87,7 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const conversation = document.createElement('div');
         conversation.className = 'conversation';
-        conversation.style.cssText = 'flex: 1; padding: 10px; border-radius: 8px; margin-bottom: 10px; height: 380px;';
+        conversation.style.cssText = 'flex: 1; padding: 10px; border-radius: 8px; margin-bottom: 10px; height: 360px;';
 
         const message1 = document.createElement('div');
         message1.className = 'message left';
