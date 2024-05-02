@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const openDialogButton = document.createElement('button');
     openDialogButton.id = 'openDialogButton';
-    openDialogButton.textContent = 'Open Dialog Box';
+    openDialogButton.textContent = 'Open TAU ChatBot';
     openDialogButton.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background-color: #007bff; color: white; border: none; border-radius: 8px; padding: 10px 20px; cursor: pointer;';
     document.body.appendChild(openDialogButton);
     openDialogButton.addEventListener('click', openDialog);
@@ -11,7 +11,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const dialog = document.createElement('div');
         dialog.id = 'dialog';
-        dialog.style.cssText = 'position: fixed; bottom: 20px; right: 20px; width: 400px; background-color: #f8f9fa; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: none; height: 650px;';
+        dialog.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background-color: #f8f9fa; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: none; ';
+
+        function adjustDialogSize() {
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            if (screenWidth < 600) {
+                dialog.style.width = '80%';
+            } else if (screenWidth < 992) {
+                dialog.style.width = '55%';
+            } else {
+                dialog.style.width = '400px';
+            }
+
+            if (screenHeight < 650) {
+                dialog.style.height = '80%';
+            } else {
+                dialog.style.height = '650px';
+            }
+        }
+        adjustDialogSize();
+
+        window.addEventListener('resize', adjustDialogSize);
 
         const content = document.createElement('div');
         content.className = 'content';
@@ -47,8 +69,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const containerInner = document.createElement('div');
         containerInner.className = 'container-inner';
-        containerInner.style.cssText = 'height: 508px;overflow-y: auto;padding: 10px 15px 4px 15px; display: flex; flex-direction: column;';
+        containerInner.style.cssText = 'overflow-y: auto;padding: 10px 15px 4px 15px; display: flex; flex-direction: column;';
+        function adjustContainerInnerSize() {
+            const screenHeight = window.innerHeight;
+            if (screenHeight < 650) {
+                containerInner.style.height = '72%';
+                containerInner.style.paddingBottom = '4%';
+            } else {
+                containerInner.style.height = '496px';
+                containerInner.style.paddingBottom = '-4%';
+            }
+        }
 
+        adjustContainerInnerSize();
+
+        window.addEventListener('resize', adjustContainerInnerSize);
 
         const conversation = document.createElement('div');
         conversation.className = 'conversation';
@@ -62,13 +97,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const typing = document.createElement('div');
         typing.className = 'typing';
-        typing.style.cssText = 'flex: 1; background-color: #fff; border-top: 1px solid #eaeaea; display: flex; align-items: center; padding: 5px 10px 5px 10px; border-radius: 8px; position: absolute; bottom: 0; width: 90%;';
+        typing.style.cssText = 'flex: 1; background-color: #fff; border-top: 1px solid #eaeaea;display: flex; align-items: center; padding:8px; border-radius: 8px; position: absolute; bottom: 0; width: 90%;';
+
+        const typingMessage = document.createElement('div');
+        typingMessage.className = 'typing-message';
+        typingMessage.style.cssText = 'margin-right: 10px;';
 
         const inputField = document.createElement('input');
         inputField.type = 'text';
         inputField.placeholder = 'Type your message here';
         inputField.style.cssText = 'flex: 1; padding: 5px; margin-right: 10px; border: 1px solid #ccc; border-radius: 3px;';
-        inputField.autofocus = true; 
+        inputField.autofocus = true;
 
         const sendIcon = document.createElement('div');
         sendIcon.className = 'send-icon';
@@ -94,17 +133,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
         openDialogButton.addEventListener('click', function () {
             dialog.style.display = 'block';
-            inputField.focus(); 
+            inputField.focus();
         });
 
         closeButton.addEventListener('click', function () {
             dialog.style.display = 'none';
         });
 
-        sendIcon.addEventListener('click', function () {
+        sendIcon.addEventListener('click', sendMessage);
+        inputField.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter' && event.shiftKey) {
+                event.preventDefault();
+                inputField.value += '\n';
+            } else if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function sendMessage() {
             const messageContent = inputField.value.trim();
+
+            const responseUserContent = messageContent;
+
+            conversation.style.display = 'flex';
+            conversation.style.flexDirection = 'column';
+
+            const responseUserMessage = document.createElement('div');
+            responseUserMessage.className = 'message left';
+            responseUserMessage.style.cssText = 'background-color: #007bff; color: #fff; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px;';
+            responseUserMessage.textContent = responseUserContent;
+            conversation.appendChild(responseUserMessage);
+
             if (messageContent !== '') {
                 inputField.value = '';
+
+                const typingMessage = document.createElement('div');
+                typingMessage.className = 'message left';
+                typingMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                typingMessage.textContent = 'Typing...';
+                conversation.appendChild(typingMessage);
+
+                const responseTimeout = setTimeout(() => {
+                    conversation.removeChild(typingMessage);
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'message left';
+                    errorMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                    errorMessage.textContent = 'Response is taking too long. Please try again later.';
+                    conversation.appendChild(errorMessage);
+                }, 5000);
+
                 const apiUrl = 'https://dev.chatbot.simplyfy.ai/api/v1/master/services/chat/?is_testing=True';
                 const requestBody = {
                     "service_id": "gcs_8669de",
@@ -124,18 +201,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                     .then(response => response.json())
                     .then(data => {
+                        clearTimeout(responseTimeout);
+                        conversation.removeChild(typingMessage);
+
                         const responseDataContent = data.data.content;
-                        const responseUserContent = data.user_message.content;
-
-
-                        conversation.style.display = 'flex'; 
-                        conversation.style.flexDirection = 'column';
-
-                        const responseUserMessage = document.createElement('div');
-                        responseUserMessage.className = 'message left';
-                        responseUserMessage.style.cssText = 'background-color: #007bff; color: #fff; float: right; align-self: flex-end;max-width: 70%;margin-bottom: 10px;padding: 10px;border-radius: 10px;';
-                        responseUserMessage.textContent = responseUserContent;
-                        conversation.appendChild(responseUserMessage);
 
                         const responseMessage = document.createElement('div');
                         responseMessage.className = 'message left';
@@ -143,14 +212,31 @@ document.addEventListener("DOMContentLoaded", function () {
                         responseMessage.textContent = responseDataContent;
                         conversation.appendChild(responseMessage);
 
-
                         inputField.value = '';
                     })
                     .catch(error => {
+                        clearTimeout(responseTimeout);
                         console.error('Error:', error);
                     });
             }
-        });
+        };
 
     }
+    const style = document.createElement('style');
+    style.textContent = `
+     .container-inner::-webkit-scrollbar {
+         width: 4px;
+         height: 3px;
+     }
+
+     .container-inner::-webkit-scrollbar-track {
+         border-radius: 8px;
+     }
+
+     .container-inner::-webkit-scrollbar-thumb {
+         background-color: darkgrey;
+         border-radius: 8px;
+     }
+ `;
+    document.head.appendChild(style);
 });
