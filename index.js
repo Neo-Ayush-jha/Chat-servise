@@ -192,38 +192,39 @@ document.addEventListener("DOMContentLoaded", function () {
         });
 
 
-        const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-        svgIcon.setAttribute("width", "26");
-        svgIcon.setAttribute("height", "26");
-        svgIcon.setAttribute("viewBox", "0 0 24 24");
-        svgIcon.setAttribute("fill", "none");
-        svgIcon.setAttribute("fill", "#007bff");
-        svgIcon.setAttribute("color", "#fff");
-        svgIcon.setAttribute("stroke", "currentColor");
-        svgIcon.setAttribute("stroke-width", "2");
-        svgIcon.setAttribute("stroke-linecap", "round");
-        svgIcon.setAttribute("stroke-linejoin", "round");
-        svgIcon.classList.add("lucide", "lucide-circle-user");
-
-        const circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle1.setAttribute("cx", "12");
-        circle1.setAttribute("cy", "12");
-        circle1.setAttribute("r", "10");
-
-        const circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle2.setAttribute("cx", "12");
-        circle2.setAttribute("cy", "10");
-        circle2.setAttribute("r", "3");
-
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("d", "M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662");
-
-        svgIcon.appendChild(circle1);
-        svgIcon.appendChild(circle2);
-        svgIcon.appendChild(path);
-
         function sendMessage() {
+
+            const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+            svgIcon.setAttribute("width", "26");
+            svgIcon.setAttribute("height", "26");
+            svgIcon.setAttribute("viewBox", "0 0 24 24");
+            svgIcon.setAttribute("fill", "none");
+            svgIcon.setAttribute("fill", "#007bff");
+            svgIcon.setAttribute("color", "#fff");
+            svgIcon.setAttribute("stroke", "currentColor");
+            svgIcon.setAttribute("stroke-width", "2");
+            svgIcon.setAttribute("stroke-linecap", "round");
+            svgIcon.setAttribute("stroke-linejoin", "round");
+            svgIcon.classList.add("lucide", "lucide-circle-user");
+
+            const circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle1.setAttribute("cx", "12");
+            circle1.setAttribute("cy", "12");
+            circle1.setAttribute("r", "10");
+
+            const circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circle2.setAttribute("cx", "12");
+            circle2.setAttribute("cy", "10");
+            circle2.setAttribute("r", "3");
+
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", "M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662");
+
+            svgIcon.appendChild(circle1);
+            svgIcon.appendChild(circle2);
+            svgIcon.appendChild(path);
+
             const messageContent = inputField.value.trim();
 
             const responseUserContent = messageContent;
@@ -312,6 +313,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         ai.appendChild(responseMessage);
                         conversation.appendChild(ai);
                         inputField.value = '';
+
+                        containerInner.scrollTop = containerInner.scrollHeight;
                     })
                     .catch(error => {
                         clearTimeout(responseTimeout);
@@ -319,7 +322,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
             }
         };
-
+        
+        
     }
     const style = document.createElement('style');
     style.textContent = `
