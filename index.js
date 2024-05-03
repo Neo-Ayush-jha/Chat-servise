@@ -89,10 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         closeButton.appendChild(closeIcon);
 
-        const containerBottom = document.createElement('div');
-        containerBottom.className = 'container-bottom';
-        containerBottom.style.cssText = 'display: flex; flex-direction: column;bottom: 0;height: 160px';
-
         const containerInner = document.createElement('div');
         containerInner.className = 'container-inner';
         containerInner.style.cssText = 'overflow-y: auto;padding: 10px 15px 4px 15px; display: flex; flex-direction: column;';
@@ -174,6 +170,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         openDialogButton.addEventListener('click', function () {
             dialog.style.display = 'block';
+            containerInner.scrollTop = containerInner.scrollHeight;
             inputField.focus();
         });
 
@@ -181,13 +178,20 @@ document.addEventListener("DOMContentLoaded", function () {
             dialog.style.display = 'none';
         });
 
-        sendIcon.addEventListener('click', sendMessage);
+        sendIcon.addEventListener('click', function () {
+            const messageContent = inputField.value.trim();
+            sendMessage(messageContent);
+            containerInner.scrollTop = containerInner.scrollHeight;
+        });
         inputField.addEventListener('keypress', function (event) {
             if (event.key === 'Enter' && event.shiftKey) {
                 event.preventDefault();
                 inputField.value += '\n';
+                containerInner.scrollTop = containerInner.scrollHeight;
             } else if (event.key === 'Enter') {
-                sendMessage(inputField.value.trim());
+                const messageContent = inputField.value.trim();
+                sendMessage(messageContent);
+                containerInner.scrollTop = containerInner.scrollHeight;
             }
         });
         const followupQuestionsSection = document.createElement('div');
@@ -314,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         followupQuestionsSection.style.cssText = 'display: flex; flex: 1; padding: 2px; min-height: 20px; margin: 0px; align-items: flex-start;  color: #333; overflow-x: auto; position: absolute; bottom: 0; margin-bottom:48px;width:92%';
 
                         const followupQuestionsRow = document.createElement('div');
-                        followupQuestionsRow.style.cssText = 'display: flex; flex-direction: row;';
+                        followupQuestionsRow.style.cssText = 'display: flex; flex-direction: row;gap:2px';
 
                         followupQuestions.forEach((followQueItem, index) => {
                             if (index < 4) {
@@ -322,11 +326,13 @@ document.addEventListener("DOMContentLoaded", function () {
                                 followupQuestionItem.style.cssText = 'min-width: 28%;';
 
                                 const button = document.createElement('button');
-                                button.style.cssText = 'position: relative; white-space: nowrap; border-radius: 0.375rem; padding-top: 0.75rem; padding-right: 1rem; padding-bottom: 0.75rem; padding-left: 1rem;';
+                                button.style.cssText = 'position: relative; white-space: nowrap; border-radius: 0.375rem; padding-top: 0.75rem; padding-right: 1rem; padding-bottom: 0.75rem; padding-left: 1rem;min-width:100px';
 
                                 button.addEventListener('click', () => {
                                     messageContent = `${followQueItem.part1} ${followQueItem.part2}`;
                                     sendMessage(messageContent);
+                                    containerInner.scrollTop = containerInner.scrollHeight;
+
                                 });
 
                                 const flexContainer = document.createElement('div');
@@ -345,8 +351,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                                 const truncatedPart2 = document.createElement('div');
                                 truncatedPart2.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: normal; opacity: 0.5;';
+                                const truncatedText = followQueItem.part2.substring(0, 18);
 
-                                truncatedPart2.textContent = followQueItem.part2;
+                                const truncatedContent = followQueItem.part2.length > 18 ? truncatedText + '...' : truncatedText;
+
+                                truncatedPart2.textContent = truncatedContent;
 
                                 textContainer.appendChild(truncatedPart1);
                                 textContainer.appendChild(truncatedPart2);
@@ -372,8 +381,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
             }
         }
-        dialog.appendChild(containerBottom);
-
     }
     const style = document.createElement('style');
     style.textContent = `
