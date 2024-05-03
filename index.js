@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function () {
         status.style.color = '#9b9b9b';
         status.textContent = 'Online';
 
-
         const closeButton = document.createElement('div');
         closeButton.className = 'close';
         closeButton.style.cssText = 'font-size: 10px; font-weight: 600; color: #000; margin-left: auto; cursor: pointer; border: 1px solid #000; border-radius: 50%; padding: 4px 6px;';
@@ -90,16 +89,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
         closeButton.appendChild(closeIcon);
 
+        const containerBottom = document.createElement('div');
+        containerBottom.className = 'container-bottom';
+        containerBottom.style.cssText = 'display: flex; flex-direction: column;bottom: 0;height: 160px';
+
         const containerInner = document.createElement('div');
         containerInner.className = 'container-inner';
         containerInner.style.cssText = 'overflow-y: auto;padding: 10px 15px 4px 15px; display: flex; flex-direction: column;';
         function adjustContainerInnerSize() {
             const screenHeight = window.innerHeight;
             if (screenHeight < 650) {
-                containerInner.style.height = '72%';
+                containerInner.style.height = '62%';
                 containerInner.style.paddingBottom = '4%';
             } else {
-                containerInner.style.height = '486px';
+                containerInner.style.height = '425px';
                 containerInner.style.paddingBottom = '-4%';
             }
         }
@@ -117,8 +120,6 @@ document.addEventListener("DOMContentLoaded", function () {
         aiFirst.style.flexDirection = 'row';
         aiFirst.style.alignItems = 'end';
         aiFirst.style.gap = '2px';
-
-
 
         const avatarImage = document.createElement('img');
         avatarImage.src = 'https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png';
@@ -168,7 +169,6 @@ document.addEventListener("DOMContentLoaded", function () {
         containerInner.appendChild(typing);
         dialog.appendChild(content);
         dialog.appendChild(containerInner);
-
         document.body.appendChild(openDialogButton);
         document.body.appendChild(dialog);
 
@@ -187,13 +187,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 event.preventDefault();
                 inputField.value += '\n';
             } else if (event.key === 'Enter') {
-                sendMessage();
+                sendMessage(inputField.value.trim());
             }
         });
+        const followupQuestionsSection = document.createElement('div');
+        followupQuestionsSection.className = 'follow-up';
 
-
-        function sendMessage() {
-
+        function sendMessage(messageContent) {
             const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
             svgIcon.setAttribute("width", "26");
@@ -225,8 +225,6 @@ document.addEventListener("DOMContentLoaded", function () {
             svgIcon.appendChild(circle2);
             svgIcon.appendChild(path);
 
-            const messageContent = inputField.value.trim();
-
             const responseUserContent = messageContent;
 
             conversation.style.display = 'flex';
@@ -237,27 +235,23 @@ document.addEventListener("DOMContentLoaded", function () {
             container.style.flexDirection = 'row';
             container.style.alignItems = 'center';
             container.style.gap = '2px';
-
             container.appendChild(svgIcon);
 
             const responseUserMessage = document.createElement('div');
             responseUserMessage.className = 'message left';
             responseUserMessage.style.cssText = 'background-color: #007bff; color: #fff; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px;';
             responseUserMessage.textContent = responseUserContent;
-
             container.appendChild(responseUserMessage);
-
             conversation.appendChild(container);
-
 
             if (messageContent !== '') {
                 inputField.value = '';
+
                 const ai = document.createElement('div');
                 ai.style.display = 'flex';
                 ai.style.flexDirection = 'row';
                 ai.style.alignItems = 'end';
                 ai.style.gap = '4px';
-
 
                 const avatarImage = document.createElement('img');
                 avatarImage.src = 'https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png';
@@ -303,7 +297,6 @@ document.addEventListener("DOMContentLoaded", function () {
                         clearTimeout(responseTimeout);
                         conversation.removeChild(typingMessage);
 
-
                         const responseDataContent = data.data.content;
                         const responseMessage = document.createElement('div');
                         responseMessage.className = 'message left';
@@ -314,16 +307,73 @@ document.addEventListener("DOMContentLoaded", function () {
                         conversation.appendChild(ai);
                         inputField.value = '';
 
+                        const followupQuestions = data.followup_ques;
+                        while (followupQuestionsSection.firstChild) {
+                            followupQuestionsSection.removeChild(followupQuestionsSection.firstChild);
+                        }
+                        followupQuestionsSection.style.cssText = 'display: flex; flex: 1; padding: 2px; min-height: 20px; margin: 0px; align-items: flex-start;  color: #333; overflow-x: auto; position: absolute; bottom: 0; margin-bottom:48px;width:92%';
+
+                        const followupQuestionsRow = document.createElement('div');
+                        followupQuestionsRow.style.cssText = 'display: flex; flex-direction: row;';
+
+                        followupQuestions.forEach((followQueItem, index) => {
+                            if (index < 4) {
+                                const followupQuestionItem = document.createElement('div');
+                                followupQuestionItem.style.cssText = 'min-width: 28%;';
+
+                                const button = document.createElement('button');
+                                button.style.cssText = 'position: relative; white-space: nowrap; border-radius: 0.375rem; padding-top: 0.75rem; padding-right: 1rem; padding-bottom: 0.75rem; padding-left: 1rem;';
+
+                                button.addEventListener('click', () => {
+                                    messageContent = `${followQueItem.part1} ${followQueItem.part2}`;
+                                    sendMessage(messageContent);
+                                });
+
+                                const flexContainer = document.createElement('div');
+                                flexContainer.style.cssText = 'display: flex; width: 100%;  align-items: center; justify-content: center;';
+
+                                const flexInnerContainer = document.createElement('div');
+                                flexInnerContainer.style.cssText = 'display: flex; width: 100%; align-items: center; justify-content: space-between; ';
+
+                                const textContainer = document.createElement('div');
+                                textContainer.style.cssText = 'display: flex; flex-direction: column; overflow: hidden;';
+
+                                const truncatedPart1 = document.createElement('div');
+                                truncatedPart1.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap;';
+
+                                truncatedPart1.textContent = followQueItem.part1;
+
+                                const truncatedPart2 = document.createElement('div');
+                                truncatedPart2.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: normal; opacity: 0.5;';
+
+                                truncatedPart2.textContent = followQueItem.part2;
+
+                                textContainer.appendChild(truncatedPart1);
+                                textContainer.appendChild(truncatedPart2);
+
+                                flexInnerContainer.appendChild(textContainer);
+
+                                flexContainer.appendChild(flexInnerContainer);
+                                button.appendChild(flexContainer);
+                                followupQuestionItem.appendChild(button);
+                                followupQuestionsRow.appendChild(followupQuestionItem);
+                            }
+                        });
+
+                        followupQuestionsSection.appendChild(followupQuestionsRow);
+                        containerInner.appendChild(followupQuestionsSection);
+
                         containerInner.scrollTop = containerInner.scrollHeight;
+
                     })
                     .catch(error => {
                         clearTimeout(responseTimeout);
                         console.error('Error:', error);
                     });
             }
-        };
-        
-        
+        }
+        dialog.appendChild(containerBottom);
+
     }
     const style = document.createElement('style');
     style.textContent = `
@@ -331,12 +381,21 @@ document.addEventListener("DOMContentLoaded", function () {
          width: 4px;
          height: 3px;
      }
-
      .container-inner::-webkit-scrollbar-track {
          border-radius: 8px;
      }
-
      .container-inner::-webkit-scrollbar-thumb {
+         background-color: darkgrey;
+         border-radius: 8px;
+     }
+     .follow-up::-webkit-scrollbar {
+         width: 4px;
+         height: 3px;
+     }
+     .follow-up::-webkit-scrollbar-track {
+         border-radius: 8px;
+     }
+     .follow-up::-webkit-scrollbar-thumb {
          background-color: darkgrey;
          border-radius: 8px;
      }
