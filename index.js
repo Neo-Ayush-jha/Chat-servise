@@ -126,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const message1 = document.createElement('div');
         message1.className = 'message left';
-        message1.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius: 10px;';
+        message1.style.cssText = 'background-color: #dbdada; color: #333; float: left; align-self: flex-start; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius: 12px 12px 12px 0px;';
         message1.textContent = "Absolutely, let's dive in 🙏! 🌟 Feel free to ask anything on your mind, and we'll navigate through together! 🚀.";
 
         aiFirst.appendChild(avatarImage);
@@ -200,11 +200,11 @@ document.addEventListener("DOMContentLoaded", function () {
         function sendMessage(messageContent) {
             const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-            svgIcon.setAttribute("width", "26");
-            svgIcon.setAttribute("height", "26");
+            svgIcon.setAttribute("width", "30");
+            svgIcon.setAttribute("height", "30");
             svgIcon.setAttribute("viewBox", "0 0 24 24");
             svgIcon.setAttribute("fill", "none");
-            svgIcon.setAttribute("fill", "#007bff");
+            svgIcon.setAttribute("fill", "#262c40");
             svgIcon.setAttribute("color", "#fff");
             svgIcon.setAttribute("stroke", "currentColor");
             svgIcon.setAttribute("stroke-width", "2");
@@ -238,15 +238,17 @@ document.addEventListener("DOMContentLoaded", function () {
             container.style.display = 'flex';
             container.style.flexDirection = 'row';
             container.style.alignItems = 'center';
-            container.style.gap = '2px';
+            container.style.gap = '1px';
             container.appendChild(svgIcon);
 
             const responseUserMessage = document.createElement('div');
             responseUserMessage.className = 'message left';
-            responseUserMessage.style.cssText = 'background-color: #007bff; color: #fff; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px;';
+            responseUserMessage.style.cssText = 'position: relative; background-color: #007bff; color: #fff; float: left; align-self: flex-start; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius: 12px 12px 12px 0px;';
             responseUserMessage.textContent = responseUserContent;
+
             container.appendChild(responseUserMessage);
             conversation.appendChild(container);
+
 
             if (messageContent !== '') {
                 inputField.value = '';
@@ -266,7 +268,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const typingMessage = document.createElement('div');
                 typingMessage.className = 'message left';
-                typingMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                typingMessage.style.cssText = 'background-color: #dbdada; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
                 typingMessage.textContent = 'Typing...';
                 conversation.appendChild(typingMessage);
 
@@ -274,7 +276,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     conversation.removeChild(typingMessage);
                     const errorMessage = document.createElement('div');
                     errorMessage.className = 'message left';
-                    errorMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                    errorMessage.style.cssText = 'background-color: #dbdada; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
                     errorMessage.textContent = 'Response is taking too long. Please try again later.';
                     conversation.appendChild(errorMessage);
                 }, 5000);
@@ -304,9 +306,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         const responseDataContent = data.data.content;
                         const responseMessage = document.createElement('div');
                         responseMessage.className = 'message left';
-                        responseMessage.style.cssText = 'background-color: #f0f0f0; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                        responseMessage.style.cssText = 'background-color: #dbdada; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 12px 12px 12px 0px;';
                         responseMessage.textContent = responseDataContent;
                         ai.appendChild(avatarImage);
+
                         ai.appendChild(responseMessage);
                         conversation.appendChild(ai);
                         inputField.value = '';
