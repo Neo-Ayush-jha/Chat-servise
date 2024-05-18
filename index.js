@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const openDialogButton = document.createElement('button');
     openDialogButton.id = 'openDialogButton';
     openDialogButton.innerHTML = '<img src="https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png" alt="Chat Icon" style="width: 35px; height: 35px;">';
-    openDialogButton.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background-color: #007bff; color: white; border: none; border-radius: 50%; padding: 10px 14px; cursor: pointer;';
+    openDialogButton.style.cssText = 'position: fixed; bottom: 20px; right: 76px; background-color: #64ffda; color: white; border: none; border-radius: 50%; padding: 10px 14px; cursor: pointer;';
     document.body.appendChild(openDialogButton);
     openDialogButton.addEventListener('click', openDialog);
 
