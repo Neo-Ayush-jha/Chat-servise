@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 dialog.style.width = '400px';
             }
             if (screenHeight < 650) {
-                dialog.style.height = '80%';
+                dialog.style.height = '70%';
             } else {
                 dialog.style.height = '590px';
             }
