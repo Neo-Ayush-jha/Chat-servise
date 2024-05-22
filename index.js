@@ -1,10 +1,43 @@
 document.addEventListener("DOMContentLoaded", function () {
+    function updateButtonPosition() {
+        const screenWidth = window.innerWidth;
+
+        if (screenWidth <= 768) {
+            openDialogButton.style.bottom = '15px';
+            openDialogButton.style.right = '30px';
+            openDialogButtonImage.style.width = '25px';
+            openDialogButtonImage.style.height = '25px';
+        } else if (screenWidth <= 1024) {
+            openDialogButton.style.bottom = '20px';
+            openDialogButton.style.right = '50px';
+            openDialogButtonImage.style.width = '30px';
+            openDialogButtonImage.style.height = '30px';
+        } else {
+            openDialogButton.style.bottom = '20px';
+            openDialogButton.style.right = '76px';
+            openDialogButtonImage.style.width = '35px';
+            openDialogButtonImage.style.height = '35px';
+        }
+    }
+
     const openDialogButton = document.createElement('button');
     openDialogButton.id = 'openDialogButton';
-    openDialogButton.innerHTML = '<img src="https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png" alt="Chat Icon" style="width: 35px; height: 35px;">';
-    openDialogButton.style.cssText = 'position: fixed; bottom: 20px; right: 76px; background-color: #64ffda; color: white; border: none; border-radius: 50%; padding: 10px 14px; cursor: pointer;';
+    openDialogButton.style.cssText = 'position: fixed;color: white; border: none; border-radius: 50%; padding: 10px 14px; cursor: pointer;';
+
+    const openDialogButtonImage = document.createElement('img');
+    openDialogButtonImage.src = 'https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png';
+    openDialogButtonImage.alt = 'Chat Icon';
+    openDialogButtonImage.style.cssText = 'width: 35px; height: 35px;';
+
+    openDialogButton.appendChild(openDialogButtonImage);
+
     document.body.appendChild(openDialogButton);
+
     openDialogButton.addEventListener('click', openDialog);
+
+    updateButtonPosition();
+
+    window.addEventListener('resize', updateButtonPosition);
 
     function getUrlParameter(url, name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -28,21 +61,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const dialog = document.createElement('div');
         dialog.id = 'dialog';
-        dialog.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background-color: #f8f9fa; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: none; ';
+        dialog.style.cssText = "position: fixed; bottom: 20px; right: 20px; background-color: #FFFFFF; border: 1px solid #DFDFE1FF; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); display: none;  font-family:  ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica Neue, Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'";
 
         function adjustDialogSize() {
             const screenWidth = window.innerWidth;
             const screenHeight = window.innerHeight;
 
             if (screenWidth < 600) {
-                dialog.style.width = '80%';
+                dialog.style.width = '90%';
             } else if (screenWidth < 992) {
-                dialog.style.width = '55%';
+                dialog.style.width = '90%';
             } else {
                 dialog.style.width = '400px';
             }
             if (screenHeight < 650) {
-                dialog.style.height = '70%';
+                dialog.style.height = '80%';
             } else {
                 dialog.style.height = '590px';
             }
@@ -53,16 +86,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const content = document.createElement('div');
         content.className = 'content';
-        content.style.cssText = 'display: flex; flex-direction: column;';
+        content.style.cssText = "display: flex; flex-direction: column;";
 
         const topRow = document.createElement('div');
         topRow.className = 'top-row';
-        topRow.style.cssText = ' padding: 10px 15px 0px 15px; display: flex; align-items: center; background: linear-gradient(to right, #93eefa, #5b5bc2); border-top-left-radius: 8px; border-top-right-radius: 8px; position: relative;';
+        topRow.style.cssText = ' padding: 15px 15px 0px 15px; display: flex;  background: linear-gradient(to right, #93eefa, #5b5bc2); border-top-left-radius: 8px; border-top-right-radius: 8px; position: relative;';
 
         const avatar = document.createElement('div');
         avatar.className = 'avatar';
         avatar.style.marginRight = '15px';
-        avatar.innerHTML = '<img src="https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png" alt="" style=" width: 45px; height: 45px;">';
+        avatar.innerHTML = '<img src="https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png" alt="" style=" width: 32px; height: 32px;">';
 
         const company = document.createElement('div');
         company.className = 'company';
@@ -73,14 +106,10 @@ document.addEventListener("DOMContentLoaded", function () {
         header.style.cssText = 'font-size: 28px; font-weight: 700; color: #000;';
         header.textContent = 'TAU ChatBot';
 
-        const status = document.createElement('div');
-        status.className = 'status';
-        status.style.color = '#9b9b9b';
-        status.textContent = 'Online';
 
         const closeButton = document.createElement('div');
         closeButton.className = 'close';
-        closeButton.style.cssText = 'font-size: 10px; font-weight: 600; color: #000; margin-left: auto; cursor: pointer; border: 1px solid #000; border-radius: 50%; padding: 4px 6px;';
+        closeButton.style.cssText = 'font-size: 10px; font-weight: 600; color: #000; margin-left: auto; cursor: pointer;top:0';
 
         const closeIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         closeIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
@@ -111,10 +140,10 @@ document.addEventListener("DOMContentLoaded", function () {
         function adjustContainerInnerSize() {
             const screenHeight = window.innerHeight;
             if (screenHeight < 650) {
-                containerInner.style.height = '62%';
+                containerInner.style.height = '50%';
                 containerInner.style.paddingBottom = '4%';
             } else {
-                containerInner.style.height = '425px';
+                containerInner.style.height = '365px';
                 containerInner.style.paddingBottom = '-4%';
             }
         }
@@ -126,26 +155,47 @@ document.addEventListener("DOMContentLoaded", function () {
         const conversation = document.createElement('div');
         conversation.className = 'conversation';
         conversation.style.cssText = 'flex: 1; padding: 10px; border-radius: 8px; margin-bottom: 10px; height: 360px;';
+        const screenHeight = window.innerHeight;
+
+        if (screenHeight <= 600) {
+            conversation.style.height = '200px';
+        } else if (screenHeight <= 800) {
+            conversation.style.height = '280px';
+        } else {
+            conversation.style.height = '360px';
+        }
 
         const aiFirst = document.createElement('div');
         aiFirst.style.display = 'flex';
-        aiFirst.style.flexDirection = 'row';
-        aiFirst.style.alignItems = 'end';
-        aiFirst.style.gap = '2px';
+        aiFirst.style.flexDirection = 'column';
+        aiFirst.style.alignItems = 'start';
+
+        const avatarContainer = document.createElement('div');
+        avatarContainer.style.display = 'flex';
+        avatarContainer.style.alignItems = 'center';
+        avatarContainer.style.marginBottom = '8px';
+        avatarContainer.style.marginLeft = '-15px';
 
         const avatarImage = document.createElement('img');
         avatarImage.src = 'https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png';
         avatarImage.alt = '';
         avatarImage.style.width = '24px';
         avatarImage.style.height = '24px';
-        avatarImage.style.marginBottom = '18px';
+        avatarImage.style.marginRight = '8px';
+
+
+        const botName = document.createElement('div');
+        botName.style.cssText = 'color: #666; font-size: 12px;';
+        botName.textContent = "TAU Chatbot";
 
         const message1 = document.createElement('div');
         message1.className = 'message left';
-        message1.style.cssText = 'background-color: #dbdada; color: #333; float: left; align-self: flex-start; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius: 12px 12px 12px 0px;';
+        message1.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius:2px 14px 14px 14px ;margin-left:10px';
         message1.textContent = "Absolutely, let's dive in 🙏! 🌟 Feel free to ask anything on your mind, and we'll navigate through together! 🚀.";
 
-        aiFirst.appendChild(avatarImage);
+        avatarContainer.appendChild(avatarImage);
+        avatarContainer.appendChild(botName);
+        aiFirst.appendChild(avatarContainer);
         aiFirst.appendChild(message1);
         conversation.appendChild(aiFirst)
 
@@ -160,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const inputField = document.createElement('input');
         inputField.type = 'text';
         inputField.placeholder = 'Type your message here';
-        inputField.style.cssText = 'flex: 1; padding: 5px; margin-right: 10px; border: 1px solid #ccc; border-radius: 3px;';
+        inputField.style.cssText = 'flex: 1; padding: 5px; margin-right: 10px; border: 1px solid #DFDFE1FF; border-radius: 3px;';
         inputField.autofocus = true;
 
         const sendIcon = document.createElement('div');
@@ -170,7 +220,6 @@ document.addEventListener("DOMContentLoaded", function () {
         sendIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" xml:space="preserve"><path fill="#007bff" d="M22,11.7V12h-0.1c-0.1,1-17.7,9.5-18.8,9.1c-1.1-0.4,2.4-6.7,3-7.5C6.8,12.9,17.1,12,17.1,12H17c0,0,0-0.2,0-0.2c0,0,0,0,0,0c0-0.4-10.2-1-10.8-1.7c-0.6-0.7-4-7.1-3-7.5C4.3,2.1,22,10.5,22,11.7z" /></svg>';
 
         company.appendChild(header);
-        company.appendChild(status);
         topRow.appendChild(avatar);
         topRow.appendChild(company);
         topRow.appendChild(closeButton);
@@ -214,36 +263,27 @@ document.addEventListener("DOMContentLoaded", function () {
         followupQuestionsSection.className = 'follow-up';
 
         function sendMessage(messageContent) {
-            const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            svgIcon.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-            svgIcon.setAttribute("width", "30");
-            svgIcon.setAttribute("height", "30");
-            svgIcon.setAttribute("viewBox", "0 0 24 24");
-            svgIcon.setAttribute("fill", "none");
-            svgIcon.setAttribute("fill", "#262c40");
-            svgIcon.setAttribute("color", "#fff");
-            svgIcon.setAttribute("stroke", "currentColor");
-            svgIcon.setAttribute("stroke-width", "2");
-            svgIcon.setAttribute("stroke-linecap", "round");
-            svgIcon.setAttribute("stroke-linejoin", "round");
-            svgIcon.classList.add("lucide", "lucide-circle-user");
+            const userContainer = document.createElement('div');
+            userContainer.style.display = 'flex';
+            userContainer.style.alignItems = 'end';
+            userContainer.style.marginBottom = '8px';
+            userContainer.style.marginLeft = '-15px';
 
-            const circle1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            circle1.setAttribute("cx", "12");
-            circle1.setAttribute("cy", "12");
-            circle1.setAttribute("r", "10");
+            const svgIcon = document.createElement('img');
+            svgIcon.src = 'https://img.icons8.com/color/48/user.png';
+            svgIcon.alt = '';
+            svgIcon.style.width = '24px';
+            svgIcon.style.height = '24px';
+            svgIcon.style.marginRight = '8px';
 
-            const circle2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            circle2.setAttribute("cx", "12");
-            circle2.setAttribute("cy", "10");
-            circle2.setAttribute("r", "3");
 
-            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-            path.setAttribute("d", "M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662");
+            const userName = document.createElement('div');
+            userName.style.cssText = 'color: #666; font-size: 12px;';
+            userName.textContent = "Customer";
 
-            svgIcon.appendChild(circle1);
-            svgIcon.appendChild(circle2);
-            svgIcon.appendChild(path);
+            userContainer.appendChild(svgIcon);
+            userContainer.appendChild(userName);
+
 
             const responseUserContent = messageContent;
 
@@ -252,38 +292,51 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const container = document.createElement('div');
             container.style.display = 'flex';
-            container.style.flexDirection = 'row';
-            container.style.alignItems = 'center';
-            container.style.gap = '1px';
-            container.appendChild(svgIcon);
+            container.style.flexDirection = 'column';
+            container.style.alignItems = 'end';
+            container.appendChild(userContainer);
 
             const responseUserMessage = document.createElement('div');
-            responseUserMessage.className = 'message left';
-            responseUserMessage.style.cssText = 'position: relative; background-color: #007bff; color: #fff; float: left; align-self: flex-start; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius: 12px 12px 12px 0px;';
+            responseUserMessage.className = 'message right';
+            responseUserMessage.style.cssText = 'position: relative; background-color: #007bff; color: #fff; float: right; align-self: flex-end; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius:14px 2px 14px 14px;';
             responseUserMessage.textContent = responseUserContent;
+
 
             container.appendChild(responseUserMessage);
             conversation.appendChild(container);
-
             if (messageContent !== '') {
                 inputField.value = '';
 
                 const ai = document.createElement('div');
                 ai.style.display = 'flex';
-                ai.style.flexDirection = 'row';
-                ai.style.alignItems = 'end';
-                ai.style.gap = '4px';
+                ai.style.flexDirection = 'column';
+                ai.style.alignItems = 'start';
+
+
+                const avatarContainer = document.createElement('div');
+                avatarContainer.style.display = 'flex';
+                avatarContainer.style.alignItems = 'center';
+                avatarContainer.style.marginBottom = '8px';
+                avatarContainer.style.marginLeft = '-15px';
+
 
                 const avatarImage = document.createElement('img');
                 avatarImage.src = 'https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png';
                 avatarImage.alt = '';
                 avatarImage.style.width = '24px';
                 avatarImage.style.height = '24px';
-                avatarImage.style.marginBottom = '18px';
+                avatarImage.style.marginRight = '8px';
+
+                const botName = document.createElement('div');
+                botName.style.cssText = 'color: #666; font-size: 12px;';
+                botName.textContent = "TAU Chatbot";
+
+                avatarContainer.appendChild(avatarImage);
+                avatarContainer.appendChild(botName);
 
                 const typingMessage = document.createElement('div');
                 typingMessage.className = 'message left';
-                typingMessage.style.cssText = 'background-color: #dbdada; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                typingMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
                 typingMessage.textContent = 'Typing...';
                 conversation.appendChild(typingMessage);
 
@@ -291,7 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     conversation.removeChild(typingMessage);
                     const errorMessage = document.createElement('div');
                     errorMessage.className = 'message left';
-                    errorMessage.style.cssText = 'background-color: #dbdada; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                    errorMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
                     errorMessage.textContent = 'Response is taking too long. Please try again later.';
                     conversation.appendChild(errorMessage);
                 }, 5000);
@@ -321,9 +374,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         const responseDataContent = data.data.content;
                         const responseMessage = document.createElement('div');
                         responseMessage.className = 'message left';
-                        responseMessage.style.cssText = 'background-color: #dbdada; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 12px 12px 12px 0px;';
+                        responseMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius:2px 14px 14px 14px ;margin-left:10px';
                         responseMessage.textContent = responseDataContent;
-                        ai.appendChild(avatarImage);
+                        ai.appendChild(avatarContainer);
 
                         ai.appendChild(responseMessage);
                         conversation.appendChild(ai);
@@ -341,10 +394,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         followupQuestions.forEach((followQueItem, index) => {
                             if (index < 4) {
                                 const followupQuestionItem = document.createElement('div');
-                                followupQuestionItem.style.cssText = 'min-width: 28%;';
+                                followupQuestionItem.style.cssText = 'min-width: 28%; ';
 
                                 const button = document.createElement('button');
-                                button.style.cssText = 'position: relative; white-space: nowrap; border-radius: 0.375rem; padding-top: 0.75rem; padding-right: 1rem; padding-bottom: 0.75rem; padding-left: 1rem;min-width:100px';
+                                button.style.cssText = 'position: relative; white-space: nowrap; border-radius: 0.375rem; padding-top: 0.75rem; padding-right: 1rem; padding-bottom: 0.75rem; padding-left: 1rem;min-width:100px;border:0px;';
 
                                 button.addEventListener('click', () => {
                                     messageContent = `${followQueItem.part1} ${followQueItem.part2}`;
