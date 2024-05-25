@@ -371,16 +371,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         clearTimeout(responseTimeout);
                         conversation.removeChild(typingMessage);
 
+
                         const responseDataContent = data.data.content;
+
                         const responseMessage = document.createElement('div');
                         responseMessage.className = 'message left';
                         responseMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius:2px 14px 14px 14px ;margin-left:10px';
-                        responseMessage.textContent = responseDataContent;
                         ai.appendChild(avatarContainer);
-
                         ai.appendChild(responseMessage);
                         conversation.appendChild(ai);
-                        inputField.value = '';
+
+                        typeText(responseMessage, responseDataContent, 50);
 
                         const followupQuestions = data.followup_ques;
                         while (followupQuestionsSection.firstChild) {
@@ -451,6 +452,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.error('Error:', error);
                     });
             }
+        }
+        function typeText(element, text, speed) {
+            let index = 0;
+            function type() {
+                if (index < text.length) {
+                    element.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
         }
     }
     const style = document.createElement('style');
