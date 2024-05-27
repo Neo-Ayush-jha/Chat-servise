@@ -106,6 +106,23 @@ document.addEventListener("DOMContentLoaded", function () {
         header.style.cssText = 'font-size: 28px; font-weight: 700; color: #000;';
         header.textContent = 'TAU ChatBot';
 
+        const toggleButton = document.createElement('div');
+        toggleButton.id = 'toggleButton';
+        toggleButton.style.cssText = 'font-size: 10px; font-weight: 600; color: #000; margin-left: auto; cursor: pointer;top:0;height:0px;margin-left: 24%';
+
+        const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon-star"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9"/><path d="M20 3v4"/><path d="M22 5h-4"/></svg>`;
+        const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>`;
+
+        toggleButton.innerHTML = moonIcon; 
+
+        toggleButton.addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                toggleButton.innerHTML = sunIcon; 
+            } else {
+                toggleButton.innerHTML = moonIcon; 
+            }
+        });
 
         const closeButton = document.createElement('div');
         closeButton.className = 'close';
@@ -190,7 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const message1 = document.createElement('div');
         message1.className = 'message left';
-        message1.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius:2px 14px 14px 14px ;margin-left:10px';
+        message1.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius:2px 14px 14px 14px ;margin-left:10px';
         message1.textContent = "Absolutely, let's dive in 🙏! 🌟 Feel free to ask anything on your mind, and we'll navigate through together! 🚀.";
 
         avatarContainer.appendChild(avatarImage);
@@ -201,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const typing = document.createElement('div');
         typing.className = 'typing';
-        typing.style.cssText = 'flex: 1; background-color: #fff; border-top: 1px solid #eaeaea;display: flex; align-items: center; padding:8px; border-radius: 8px; position: absolute; bottom: 0; width: 90%;';
+        typing.style.cssText = 'flex: 1; background-color: transparent; border-top: 1px solid transparent;display: flex; align-items: center; padding:8px; border-radius: 8px; position: absolute; bottom: 0; width: 90%;';
 
         const typingMessage = document.createElement('div');
         typingMessage.className = 'typing-message';
@@ -222,6 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
         company.appendChild(header);
         topRow.appendChild(avatar);
         topRow.appendChild(company);
+        topRow.appendChild(toggleButton);
         topRow.appendChild(closeButton);
         content.appendChild(topRow);
         containerInner.appendChild(conversation);
@@ -276,14 +294,12 @@ document.addEventListener("DOMContentLoaded", function () {
             svgIcon.style.height = '24px';
             svgIcon.style.marginRight = '8px';
 
-
             const userName = document.createElement('div');
             userName.style.cssText = 'color: #666; font-size: 12px;';
             userName.textContent = "Customer";
 
             userContainer.appendChild(svgIcon);
             userContainer.appendChild(userName);
-
 
             const responseUserContent = messageContent;
 
@@ -301,7 +317,6 @@ document.addEventListener("DOMContentLoaded", function () {
             responseUserMessage.style.cssText = 'position: relative; background-color: #007bff; color: #fff; float: right; align-self: flex-end; max-width: 85%; margin-bottom: 10px; padding: 10px; border-radius:14px 2px 14px 14px;';
             responseUserMessage.textContent = responseUserContent;
 
-
             container.appendChild(responseUserMessage);
             conversation.appendChild(container);
             if (messageContent !== '') {
@@ -318,7 +333,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 avatarContainer.style.alignItems = 'center';
                 avatarContainer.style.marginBottom = '8px';
                 avatarContainer.style.marginLeft = '-15px';
-
 
                 const avatarImage = document.createElement('img');
                 avatarImage.src = 'https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png';
@@ -464,6 +478,49 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             type();
         }
+
+        // Dark Mode Toggle Functionality
+        let darkMode = false;
+
+        toggleButton.addEventListener('click', () => {
+            darkMode = !darkMode;
+            if (darkMode) {
+                dialog.style.setProperty('--bg-color', '#171719FF');
+                dialog.style.setProperty('--text-color', '#FFF');
+                dialog.style.setProperty('--header-bg', 'linear-gradient(to right, #1e3c72, #2a5298)');
+                // document.documentElement.style.setProperty('--message-bg-left', '#E9E9EAFF');
+                // document.documentElement.style.setProperty('--message-bg-right', '#0056b3');
+                toggleButton.style.backgroundColor = '#0056b3';
+            } else {
+                dialog.style.setProperty('--bg-color', '#FFFFFF');
+                dialog.style.setProperty('--text-color', '#000');
+                dialog.style.setProperty('--header-bg', 'linear-gradient(to right, #93eefa, #5b5bc2)');
+                // document.documentElement.style.setProperty('--message-bg-left', '#171719FF');
+                //                 document.documentElement.style.setProperty('--message-bg-right', '#007bff');
+                toggleButton.style.backgroundColor = '#007bff';
+            }
+
+            document.body.style.backgroundColor = 'var(--bg-color)';
+            document.body.style.color = 'var(--text-color)';
+            dialog.style.backgroundColor = 'var(--bg-color)';
+            dialog.style.color = 'var(--text-color)';
+            topRow.style.background = 'var(--header-bg)';
+            message1.style.backgroundColor = 'var(--message-bg-left)';
+        });
+
+        // Setting initial properties
+        document.documentElement.style.setProperty('--bg-color', '#FFFFFF');
+        document.documentElement.style.setProperty('--text-color', '#000');
+        document.documentElement.style.setProperty('--header-bg', 'linear-gradient(to right, #93eefa, #5b5bc2)');
+        document.documentElement.style.setProperty('--message-bg-left', '#E9E9EAFF');
+        document.documentElement.style.setProperty('--message-bg-right', '#007bff');
+
+        // document.body.style.backgroundColor = 'var(--bg-color)';
+        // document.body.style.color = 'var(--text-color)';
+        dialog.style.backgroundColor = 'var(--bg-color)';
+        dialog.style.color = 'var(--text-color)';
+        topRow.style.background = 'var(--header-bg)';
+        message1.style.backgroundColor = 'var(--message-bg-left)';
     }
     const style = document.createElement('style');
     style.textContent = `
