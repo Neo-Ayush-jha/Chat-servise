@@ -258,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const message1 = document.createElement('div');
         message1.className = 'message left';
-        message1.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius:2px 14px 14px 14px ;margin-left:10px';
+        message1.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 40px;padding: 10px;border-radius:2px 14px 14px 14px ;margin-left:10px';
         message1.textContent = chatBot[0].introMsg;
 
         avatarContainer.appendChild(avatarImage);
@@ -352,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
         buttonPermission.appendChild(noButton);
 
         connectMsg.appendChild(buttonPermission);
-        let LeadSubmitDiloge = true;
+        let LeadSubmitDiloge;
         function sendMessage(messageContent) {
             const userContainer = document.createElement('div');
             userContainer.style.display = 'flex';
@@ -433,7 +433,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     conversation.removeChild(typingMessage);
                     const errorMessage = document.createElement('div');
                     errorMessage.className = 'message left';
-                    errorMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius: 10px';
+                    errorMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 40px;padding: 10px;border-radius: 10px';
                     errorMessage.textContent = 'Response is taking too long. Please try again later.';
                     conversation.appendChild(errorMessage);
                 }, 5000);
@@ -457,6 +457,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .then(response => response.json())
                     .then(data => {
                         clearTimeout(responseTimeout);
+                        console.log(data)
                         conversation.removeChild(typingMessage);
                         let responseDataContent;
                         if (typeof data.data.content === 'string') {
@@ -471,20 +472,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         const responseMessage = document.createElement('div');
                         responseMessage.className = 'message left';
-                        responseMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 10px;padding: 10px;border-radius:2px 14px 14px 14px ;margin-left:10px';
+                        responseMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 40px;padding: 10px;border-radius:2px 14px 14px 14px ;margin-left:10px';
                         ai.appendChild(avatarContainer);
                         ai.appendChild(responseMessage);
                         // if (data.data.content.can_handle === 1) { ai.appendChild(connectMsg); }
-
                         conversation.appendChild(ai);
 
                         // typeText(responseMessage, responseDataContent, 50);
                         typeText(responseMessage, responseDataContent, 50, () => {
-                            if (data.data.content.can_handle === 1 && LeadSubmitDiloge === true) {
+                            if (data.data.content.can_handle === 1 && leadGenerationPitch ) {
                                 ai.appendChild(connectMsg);
+                                LeadSubmitDiloge = true;
+                            } else {
+                                LeadSubmitDiloge = false;
                             }
                         })
 
+                        console.log(LeadSubmitDiloge)
                         const followupQuestions = data.followup_ques;
                         while (followupQuestionsSection.firstChild) {
                             followupQuestionsSection.removeChild(followupQuestionsSection.firstChild);
