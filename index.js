@@ -23,20 +23,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let serviceId;
     if (!getUrlParameter(currentUrl, 'service_id')) {
-        serviceId = "orgcs_f2024d";
+        serviceId = "orgcs_44096b";
     } else {
         serviceId = getUrlParameter(currentUrl, 'service_id');
     }
     let ChatBotServise;
     let chatBot = [
         {
-            image: 'https://dev.chatbot.simplyfy.ai/media/chat_services/Image_20240208_194749_669_i5cF03X.png',
-            title: 'TAU ChatBot',
+            image: 'https://dev-portal.enterprise.tau.simplyfy.ai/media/organisation/1/profile/chat-bot-logo-design-concept-600nw-1938811039.webp',
+            title: 'TAU Enterprise',
             introMsg: "Absolutely, let's dive in 🙏! 🌟 Feel free to ask anything on your mind, and we'll navigate through together! 🚀.",
             followupQuestions: []
         }
     ];
-    const apiUrl = 'https://dev.chatbot.simplyfy.ai/api/v1/master/services/chat/?is_testing=True';
+    const apiUrl = 'https://dev-portal.enterprise.tau.simplyfy.ai/api/v1/master/organisation/chat-service/chat/?is_testing=True';
     const firstRequestBody = {
         "service_id": `${serviceId}`,
         "data": [
@@ -61,12 +61,11 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (Array.isArray(data.data.content) || typeof data.data.content === 'object') {
                 chatBot[0].introMsg = data.data.content.answer;
             }
-            chatBot[0].followupQuestions = data.followup_ques
-            console.log(chatBot[0].followupQuestions)
+            chatBot[0].followupQuestions = data.example_prompts
         })
-    console.log(chatBot[0])
+    console.log(chatBot[0],"AYush")
 
-    fetch(`https://dev.chatbot.simplyfy.ai/api/v1/master/services/${serviceId}/detail/?is_testing=True`)
+    fetch(`https://dev-portal.enterprise.tau.simplyfy.ai/api/v1/master/services/${serviceId}/detail/?is_testing=True`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -364,21 +363,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const followupQuestionsRow = document.createElement('div');
         followupQuestionsRow.style.cssText = 'display: flex; flex-direction: row;gap:2px';
-
+        
+        console.log(chatBot[0].followupQuestions)
         chatBot[0].followupQuestions.forEach((followQueItem, index) => {
+
             if (index < 4) {
                 const followupQuestionItem = document.createElement('div');
-                followupQuestionItem.style.cssText = 'min-width: 28%; ';
-
+                followupQuestionItem.style.cssText = 'min-width: 28%';
                 const button = document.createElement('button');
                 button.style.cssText = 'position: relative; white-space: nowrap; border-radius: 0.375rem; padding-top: 0.75rem; padding-right: 1rem; padding-bottom: 0.75rem; padding-left: 1rem;min-width:100px;border:0px;';
-
                 button.addEventListener('click', () => {
-                    const messageContent = `${followQueItem.part1} ${followQueItem.part2}`;
+                    // const messageContent = `${followQueItem.part1} ${followQueItem.part2}`;
+                    const messageContent = `${followQueItem}`;
                     sendMessage(messageContent);
                     containerInner.scrollTop = containerInner.scrollHeight;
                 });
-
                 const flexContainer = document.createElement('div');
                 flexContainer.style.cssText = 'display: flex; width: 100%;  align-items: center; justify-content: center;';
 
@@ -391,13 +390,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 const truncatedPart1 = document.createElement('div');
                 truncatedPart1.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap;';
 
-                truncatedPart1.textContent = followQueItem.part1;
-
+                // truncatedPart1.textContent = followQueItem.part1;
+                truncatedPart1.textContent = followQueItem;
                 const truncatedPart2 = document.createElement('div');
                 truncatedPart2.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: normal; opacity: 0.5;';
-                const truncatedText = followQueItem.part2.substring(0, 18);
+                // const truncatedText = followQueItem.part2.substring(0, 18);
+                const truncatedText = followQueItem.substring(0, 18);
 
-                const truncatedContent = followQueItem.part2.length > 18 ? truncatedText + '...' : truncatedText;
+                // const truncatedContent = followQueItem.part2.length > 18 ? truncatedText + '...' : truncatedText;
+                const truncatedContent = followQueItem.length > 18 ? truncatedText + '...' : truncatedText;
 
                 truncatedPart2.textContent = truncatedContent;
 
@@ -505,16 +506,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     errorMessage.textContent = 'Response is taking too long. Please try again later.';
                     conversation.appendChild(errorMessage);
                 }, 5000);
-                const apiUrl = 'https://dev.chatbot.simplyfy.ai/api/v1/master/services/chat/?is_testing=True';
+                const apiUrl = 'https://dev-portal.enterprise.tau.simplyfy.ai/api/v1/master/organisation/chat-service/chat/?is_testing=True';
                 const requestBody = {
                     "service_id": `${serviceId}`,
-                    "data": [
+                    "messages": [
                         {
                             "role": "user",
                             "content": messageContent
                         }
                     ]
                 };
+                console.log(requestBody);
                 fetch(apiUrl, {
                     method: 'POST',
                     headers: {
@@ -557,8 +559,56 @@ document.addEventListener("DOMContentLoaded", function () {
                         })
 
                         console.log(LeadSubmitDiloge)
-                        chatBot[0].followupQuestions = data.followup_ques;
-
+                        chatBot[0].followupQuestions = data.example_prompts;
+                        chatBot[0].followupQuestions.forEach((followQueItem, index) => {
+                
+                            if (index < 4) {
+                                const followupQuestionItem = document.createElement('div');
+                                followupQuestionItem.style.cssText = 'min-width: 28%; ';
+                
+                                const button = document.createElement('button');
+                                button.style.cssText = 'position: relative; white-space: nowrap; border-radius: 0.375rem; padding-top: 0.75rem; padding-right: 1rem; padding-bottom: 0.75rem; padding-left: 1rem;min-width:100px;border:0px;';
+                                button.addEventListener('click', () => {
+                                    // const messageContent = `${followQueItem.part1} ${followQueItem.part2}`;
+                                    const messageContent = `${followQueItem}`;
+                                    sendMessage(messageContent);
+                                    containerInner.scrollTop = containerInner.scrollHeight;
+                                });
+                                const flexContainer = document.createElement('div');
+                                flexContainer.style.cssText = 'display: flex; width: 100%;  align-items: center; justify-content: center;';
+                
+                                const flexInnerContainer = document.createElement('div');
+                                flexInnerContainer.style.cssText = 'display: flex; width: 100%; align-items: center; justify-content: space-between;';
+                
+                                const textContainer = document.createElement('div');
+                                textContainer.style.cssText = 'display: flex; flex-direction: column; overflow: hidden;';
+                
+                                const truncatedPart1 = document.createElement('div');
+                                truncatedPart1.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap;';
+                
+                                // truncatedPart1.textContent = followQueItem.part1;
+                                truncatedPart1.textContent = followQueItem;
+                                const truncatedPart2 = document.createElement('div');
+                                truncatedPart2.style.cssText = 'overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: normal; opacity: 0.5;';
+                                // const truncatedText = followQueItem.part2.substring(0, 18);
+                                const truncatedText = followQueItem.substring(0, 18);
+                
+                                // const truncatedContent = followQueItem.part2.length > 18 ? truncatedText + '...' : truncatedText;
+                                const truncatedContent = followQueItem.length > 18 ? truncatedText + '...' : truncatedText;
+                
+                                truncatedPart2.textContent = truncatedContent;
+                
+                                textContainer.appendChild(truncatedPart1);
+                                textContainer.appendChild(truncatedPart2);
+                
+                                flexInnerContainer.appendChild(textContainer);
+                
+                                flexContainer.appendChild(flexInnerContainer);
+                                button.appendChild(flexContainer);
+                                followupQuestionItem.appendChild(button);
+                                followupQuestionsRow.appendChild(followupQuestionItem);
+                            }
+                        });
                         containerInner.scrollTop = containerInner.scrollHeight;
 
                     })
@@ -713,7 +763,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     };
 
 
-                    fetch('https://dev.chatbot.simplyfy.ai/api/v1/master/organisation/submit/lead/', {
+                    fetch('https://dev-portal.enterprise.tau.simplyfy.ai/api/v1/master/organisation/submit/lead/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
