@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let serviceId;
     if (!getUrlParameter(currentUrl, 'service_id')) {
-        serviceId = "orgcs_44096b";
+        serviceId = "orgcs_dd12d8";
     } else {
         serviceId = getUrlParameter(currentUrl, 'service_id');
     }
@@ -498,14 +498,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 document.head.appendChild(style);
 
-                const responseTimeout = setTimeout(() => {
-                    conversation.removeChild(typingMessage);
-                    const errorMessage = document.createElement('div');
-                    errorMessage.className = 'message left';
-                    errorMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 20px;padding: 10px;border-radius: 10px';
-                    errorMessage.textContent = 'Response is taking too long. Please try again later.';
-                    conversation.appendChild(errorMessage);
-                }, 5000);
                 const apiUrl = 'https://dev-portal.enterprise.tau.simplyfy.ai/api/v1/master/organisation/chat-service/chat/?is_testing=True';
                 const requestBody = {
                     "service_id": `${serviceId}`,
@@ -516,6 +508,14 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     ]
                 };
+                const responseTimeout = setTimeout(() => {
+                    conversation.removeChild(typingMessage);
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'message left';
+                    errorMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 20px;padding: 10px;border-radius: 10px';
+                    errorMessage.textContent = 'Response is taking too long. Please try again later.';
+                    conversation.appendChild(errorMessage);
+                }, 5000);
                 console.log(requestBody);
                 fetch(apiUrl, {
                     method: 'POST',
@@ -526,7 +526,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        clearTimeout(responseTimeout);
                         console.log(data)
                         conversation.removeChild(typingMessage);
                         let responseDataContent;
