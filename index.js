@@ -36,9 +36,16 @@ document.addEventListener("DOMContentLoaded", function () {
             followupQuestions: []
         }
     ];
-    const apiUrl = 'http://127.0.0.1:8000/api/chatbot/';
-   
-    const firstRequestBody ={ message: userText };
+    const apiUrl = 'https://dev-portal.enterprise.tau.simplyfy.ai/api/v1/master/organisation/chat-service/chat/?is_testing=True';
+    const firstRequestBody = {
+        "service_id": `${serviceId}`,
+        "data": [
+            {
+                "role": "user",
+                "content": `${ChatBotServise}`
+            }
+        ]
+    };
 
     fetch(apiUrl, {
         method: 'POST',
@@ -49,10 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
     })
         .then(response => response.json())
         .then(data => {
-            if (typeof data.bot_reply === 'string') {
-                chatBot[0].introMsg = data.bot_reply;
-            } else if (Array.isArray(data.bot_reply) || typeof data.bot_reply === 'object') {
-                chatBot[0].introMsg = data.bot_reply;
+            if (typeof data.data.content === 'string') {
+                chatBot[0].introMsg = data.data.content;
+            } else if (Array.isArray(data.data.content) || typeof data.data.content === 'object') {
+                chatBot[0].introMsg = data.data.content.answer;
             }
             chatBot[0].followupQuestions = data.example_prompts
         })
@@ -71,7 +78,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 chatBot[0].image = data.data.image;
                 chatBot[0].title = data.data.title;
             }
-            ChatBotServise = data
+            ChatBotServise = data.data
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
@@ -491,8 +498,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 document.head.appendChild(style);
 
-                const apiUrl = 'http://127.0.0.1:8000/api/chatbot/';
-                const requestBody = { message: userText };
+                const apiUrl = 'https://dev-portal.enterprise.tau.simplyfy.ai/api/v1/master/organisation/chat-service/chat/?is_testing=True';
+                const requestBody = {
+                    "service_id": `${serviceId}`,
+                    "messages": [
+                        {
+                            "role": "user",
+                            "content": messageContent
+                        }
+                    ]
+                };
                 const responseTimeout = setTimeout(() => {
                     conversation.removeChild(typingMessage);
                     const errorMessage = document.createElement('div');
@@ -514,12 +529,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.log(data)
                         conversation.removeChild(typingMessage);
                         let responseDataContent;
-                        if (typeof data.bot_reply === 'string') {
-                            responseDataContent = data.bot_reply;
-                        } else if (Array.isArray(data.bot_reply) || typeof data.bot_reply === 'object') {
-                            responseDataContent = data.bot_reply;
+                        if (typeof data.data.content === 'string') {
+                            responseDataContent = data.data.content;
+                        } else if (Array.isArray(data.data.content) || typeof data.data.content === 'object') {
+                            responseDataContent = data.data.content.answer;
                         }
-                        const leadGenerationPitch = data.bot_reply
+                        const leadGenerationPitch = data.data.content.lead_generation_pitch
 
                         msg.textContent = leadGenerationPitch;
 
@@ -529,12 +544,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         responseMessage.style.cssText = 'background-color: #E9E9EAFF; color: #333; float: left; align-self: flex-start;max-width: 85%;margin-bottom: 20px;padding: 10px;border-radius:2px 14px 14px 14px ;margin-left:10px';
                         ai.appendChild(avatarContainer);
                         ai.appendChild(responseMessage);
-                        // if (data.bot_reply.can_handle === 1) { ai.appendChild(connectMsg); }
+                        // if (data.data.content.can_handle === 1) { ai.appendChild(connectMsg); }
                         conversation.appendChild(ai);
 
                         // typeText(responseMessage, responseDataContent, 50);
                         typeText(responseMessage, responseDataContent, 50, () => {
-                            if (data.bot_reply.can_handle === 1 && leadGenerationPitch) {
+                            if (data.data.content.can_handle === 1 && leadGenerationPitch) {
                                 ai.appendChild(connectMsg);
                                 LeadSubmitDiloge = true;
                             } else {
