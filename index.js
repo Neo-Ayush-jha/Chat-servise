@@ -28,8 +28,8 @@ document.addEventListener("DOMContentLoaded", function () {
     position: fixed;
     bottom: 40px;
     right: 20px;
-    width: 380px;
-    height: 575px;
+    width: 410px;
+    height: 580px;
     background-color: white;
     border-radius: 20px;
     border: 1px solid #ccc;
